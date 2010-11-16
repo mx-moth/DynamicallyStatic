@@ -1,0 +1,9 @@
+<?php
+$config = array();
+$config['dirs'] = array();
+$config['dirs']['root'] = dirname(__FILE__);
+$config['dirs']['templates'] = $config['dirs']['root'] . '/templates';
+$config['dirs']['source'] = $config['dirs']['root'] . '/source';
+$config['dirs']['blogs'] = $config['dirs']['source'] . '/blogs';
+$config['dirs']['articles'] = $config['dirs']['source'] . '/articles';
+?>
