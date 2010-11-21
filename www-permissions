@@ -1,0 +1,52 @@
+#!/bin/bash
+
+CHECK_ROOT=1
+CREATE_SVN=1
+SET_PERMS=1
+
+function printUsage {
+	echo -n "Usage: $0 [-r] [file [file2 [...] ] ]
+Options:
+	-r	Dont check if the script is being run as root.
+		If this paramater is not passed, the script will
+		exit if it is not being run as root. Not running
+		it as root will most likley fail
+"
+	exit
+}
+
+while getopts ":r" flag; do
+	case $flag in
+		r) CHECK_ROOT=0 ;;
+		?)
+			echo Error: $OPTARG is an invalid parameter
+			printUsage
+			exit
+		       	;;
+	esac
+done
+shift $(( $OPTIND - 1 ))
+
+files=$@
+if [ -z $files ] ; then
+	files="."
+fi
+
+if [ $CHECK_ROOT -eq 1 ] && [ ! $UID -eq 0 ] ; then
+	sudo $0 "$@" || echo "Error: $0 must be run as root"
+	exit
+fi
+
+chown -R www-data:staff $files
+chmod -R 464 $files
+chmod -R +X $files
+
+writable=`find $files -type d -regex "\(^\|.*/\)\(tmp\|httpdocs\)$" -print -prune`
+if [ ! -z "$writable" ] ; then
+	echo Making the following folders writable: 
+	echo -n $writable | xargs -d ' ' -L 1 echo | sort
+	chmod -R +w $writable
+	chmod -R g+s $writable
+fi
+
+chmod a+x 'www-permissions' 'make.php'
