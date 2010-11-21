@@ -23,7 +23,7 @@ $config['dirs']['elements'] = $config['dirs']['templates'] . '/elements';
 $config['dirs']['articles'] = $config['dirs']['root'] . '/articles';
 $config['dirs']['pages'] = $config['dirs']['articles'] . '/pages';
 
-$config['dirs']['output'] = $config['dirs']['root'] . '/httpdocs';
+$config['dirs']['output'] = dirname($config['dirs']['root']) . '/httpdocs';
 
 $config['dirs']['tmp'] = $config['dirs']['root'] . '/tmp';
 
