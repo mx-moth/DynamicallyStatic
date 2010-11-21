@@ -1,9 +1,54 @@
 <?php
 $config = array();
+
+$config['default'] = array();
+$config['default']['index'] = 'index.html';
+$config['default']['article'] = array(
+	'template' => 'default.php',
+	'date' => time(),
+);
+
 $config['dirs'] = array();
 $config['dirs']['root'] = dirname(__FILE__);
+
+$config['dirs']['core'] = $config['dirs']['root'] . '/core';
+
+$config['dirs']['parsers'] = $config['dirs']['core'] . '/parsers';
+$config['dirs']['renderers'] = $config['dirs']['core'] . '/renderers';
+$config['dirs']['modules'] = $config['dirs']['core'] . '/modules';
+
 $config['dirs']['templates'] = $config['dirs']['root'] . '/templates';
-$config['dirs']['source'] = $config['dirs']['root'] . '/source';
-$config['dirs']['blogs'] = $config['dirs']['source'] . '/blogs';
-$config['dirs']['articles'] = $config['dirs']['source'] . '/articles';
-?>
+$config['dirs']['elements'] = $config['dirs']['templates'] . '/elements';
+
+$config['dirs']['articles'] = $config['dirs']['root'] . '/articles';
+$config['dirs']['pages'] = $config['dirs']['articles'] . '/pages';
+
+$config['dirs']['output'] = $config['dirs']['root'] . '/httpdocs';
+
+$config['dirs']['tmp'] = $config['dirs']['root'] . '/tmp';
+
+
+
+$config['blog'] = array();
+$config['blog']['articles'] = '/blogs/';
+
+$config['blog']['rootPath'] = '/blog/';
+$config['blog']['articlePath'] = $config['blog']['rootPath'] . '{year}/{month}/{slug}/';
+
+$config['blog']['element'] = 'articles.php';
+$config['blog']['template'] = 'blog.php';
+
+
+$config['pages'] = array();
+$config['pages']['articles'] = '/pages/';
+$config['pages']['rootPath'] = '';
+$config['pages']['articlePath'] = $config['pages']['rootPath'] . '/{path}/{slug}/';
+
+
+$config['contact']['path'] = '/contact';
+
+
+$config['tag']['rootPath'] = '/tags/';
+$config['tag']['tagPath'] = $config['tag']['rootPath'] . '{slug}/';
+$config['tag']['element'] = 'articles.php';
+$config['tag']['template'] = $config['default']['article']['template'];
