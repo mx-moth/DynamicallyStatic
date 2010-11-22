@@ -44,7 +44,7 @@ $config['pages']['articles'] = '/pages/';
 $config['pages']['home'] = $config['pages']['articles'] . 'home.php';
 
 $config['pages']['rootPath'] = '';
-$config['pages']['articlePath'] = $config['pages']['rootPath'] . '/{path}/{slug}/';
+$config['pages']['articlePath'] = $config['pages']['rootPath'] . '{path}/{slug}/';
 
 
 $config['contact']['path'] = '/contact';
