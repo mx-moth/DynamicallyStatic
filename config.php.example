@@ -5,7 +5,6 @@ $config['default'] = array();
 $config['default']['index'] = 'index.html';
 $config['default']['article'] = array(
 	'template' => 'default.php',
-	'date' => time(),
 );
 
 $config['dirs'] = array();
@@ -40,7 +39,10 @@ $config['blog']['template'] = 'blog.php';
 
 
 $config['pages'] = array();
+
 $config['pages']['articles'] = '/pages/';
+$config['pages']['home'] = $config['pages']['articles'] . 'home.php';
+
 $config['pages']['rootPath'] = '';
 $config['pages']['articlePath'] = $config['pages']['rootPath'] . '/{path}/{slug}/';
 

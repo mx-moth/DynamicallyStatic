@@ -64,7 +64,11 @@ class PageModule extends AbstractModule {
 	 * The link to the article as a string
 	 */
 	function createLink($article) {
+		if ($article['$path'] == $this->config['home']) {
+			return '/';
+		}
 		$path = dirname(substr($article['$path'], strlen($this->config['articles'])));
+
 		$replace = array(
 			'{slug}' => Inflector::slug($article['title']),
 			'{title}' => $article['title'],
