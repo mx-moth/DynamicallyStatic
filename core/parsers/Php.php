@@ -1,5 +1,10 @@
 <?php
 class PhpParser extends AbstractParser {
+
+	function __construct($ds) {
+		$this->ds = $ds;
+	}
+
 	/**
 	 * Parse a php based article. Articles in the php format should conform to
 	 * the following spec:
@@ -18,6 +23,10 @@ class PhpParser extends AbstractParser {
 	 * See: <AbstractParser::parse>
 	 */
 	function parse($file) {
+
+		// Modules can be accessed through $Module
+		extract($this->ds->modules, EXTR_SKIP);
+
 		$details = null;
 		ob_start();
 		include ($file);

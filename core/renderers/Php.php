@@ -9,7 +9,11 @@ class PhpRenderer extends AbstractRenderer {
 	}
 	
 	function render($templatePath, $args) {
+		// Extract all arguments in to the local variable scope
 		extract($args, EXTR_SKIP);
+
+		// Modules can be accessed through $Module
+		extract($this->ds->modules, EXTR_SKIP);
 
 		ob_start();
 		include($templatePath);
