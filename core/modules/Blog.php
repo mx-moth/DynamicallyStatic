@@ -15,20 +15,21 @@ class BlogModule extends AbstractModule {
 	 */
 	function preprocessArticles() {
 		// Grab all articles from the blog path
-		$blogs = array($this->ds->getArticles($this->config['articles']));
+		$page = $this->ds->getArticles($this->config['articles']);
+		$blogs = array($page);
 		$this->articles = array();
 
 		// Grab all the blogs in to a flat array
 		while (!empty($blogs)) {
-			$file = &array_pop($blogs);
-			if ($file['$type'] == 'directory') {
-				foreach ($file['files'] as $child) {
+			$file = array_pop($blogs);
+			if ($file->_type == 'directory') {
+				foreach ($file->files as $child) {
 					array_push($blogs, $child);
 				}
 			} else {
 				// Create the link for the article
 				$link = $this->createLink($file);
-				$file['link'] = $link;
+				$file->link = $link;
 
 				// Add the article to the array of articles
 				$this->articles[] = $file;
@@ -41,45 +42,24 @@ class BlogModule extends AbstractModule {
 	 */
 	function createPages() {
 
-		// Grab all articles from the blog path
-		$blogs = array($this->ds->getArticles($this->config['articles']));
-		$this->articles = array();
-
-		// Grab all the blogs in to a flat array
-		while (!empty($blogs)) {
-			$file = &array_pop($blogs);
-			if ($file['$type'] == 'directory') {
-				foreach ($file['files'] as $child) {
-					array_push($blogs, $child);
-				}
-			} else {
-				// Create the link for the article
-				$link = $this->createLink($file);
-				$file['link'] = $link;
-
-				// Add the article to the array of articles
-				$this->articles[] = $file;
-			}
-		}
-
 		// Sort them in reverse cronological order. <3 anonymous functions.
 		usort($this->articles, function ($a, $b) {
 			return $b['date'] - $a['date'];
 		});
 
 		// Render all articles
-		foreach ($this->articles as &$article) {
-			$this->ds->renderArticle($article, $article['link']);
+		foreach ($this->articles as $article) {
+			$this->ds->renderArticle($article, $article->link);
 		}
 
 		// Render the index article
-		$this->ds->renderArticle(array(
+		$this->ds->renderArticle(new Article(array(
 			'title' => 'Latest posts',
 			'contents' => $this->ds->renderElement($this->config['element'], array('articles' => $this->articles)),
 			'author' => null,
 			'date' => null,
 			'template' => $this->config['template'],
-		), $this->config['rootPath']);
+		)), $this->config['rootPath']);
 	}
 
 	/**
@@ -99,11 +79,11 @@ class BlogModule extends AbstractModule {
 	 */
 	function createLink($article) {
 		$replace = array(
-			'{year}' => date('Y', $article['date']),
-			'{month}' => date('m', $article['date']),
-			'{day}' => date('d', $article['date']),
-			'{slug}' => Inflector::slug($article['title']),
-			'{title}' => $article['title'],
+			'{year}' => date('Y', $article->date),
+			'{month}' => date('m', $article->date),
+			'{day}' => date('d', $article->date),
+			'{slug}' => Inflector::slug($article->title),
+			'{title}' => $article->title,
 		);
 		return strtr($this->config['articlePath'], $replace);
 	}

@@ -15,20 +15,21 @@ class PageModule extends AbstractModule {
 	 */
 	function preprocessArticles() {
 		// Grab all articles from the blog path
-		$pages = array($this->ds->getArticles($this->config['articles']));
+		$page = $this->ds->getArticles($this->config['articles']);
+		$pages = array($page);
 		$this->pages = array();
 
 		// Grab all the blogs in to a flat array
 		while (!empty($pages)) {
-			$file = &array_pop($pages);
-			if ($file['$type'] == 'directory') {
-				foreach ($file['files'] as $child) {
+			$file = array_pop($pages);
+			if ($file->_type == 'directory') {
+				foreach ($file->files as $child) {
 					array_push($pages, $child);
 				}
 			} else {
 				// Create the link for the article
 				$link = $this->createLink($file);
-				$file['link'] = $link;
+				$file->link = $link;
 
 				// Add the article to the array of articles
 				$this->pages[] = $file;
@@ -42,8 +43,8 @@ class PageModule extends AbstractModule {
 	function createPages() {
 
 		// Render all articles
-		foreach ($this->pages as &$page) {
-			$this->ds->renderArticle($page, $page['link']);
+		foreach ($this->pages as $page) {
+			$this->ds->renderArticle($page, $page->link);
 		}
 
 	}
@@ -64,11 +65,11 @@ class PageModule extends AbstractModule {
 	 * The link to the article as a string
 	 */
 	function createLink($article) {
-		if ($article['$path'] == $this->config['home']) {
+		if ($article->_path == $this->config['home']) {
 			return '/';
 		}
-		$path = dirname(substr($article['$path'], strlen($this->config['articles'])));
-		$title = empty($article['title']) ? null : $article['title'];
+		$path = dirname(substr($article->_path, strlen($this->config['articles'])));
+		$title = empty($article->title) ? null : $article->title;
 		$replace = array(
 			'{slug}' => Inflector::slug($title),
 			'{title}' => $title,

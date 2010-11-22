@@ -27,14 +27,14 @@ class PhpParser extends AbstractParser {
 		// Modules can be accessed through $Module
 		extract($this->ds->modules, EXTR_SKIP);
 
-		$details = null;
+		$details = new Article();
 		ob_start();
 		include ($file);
-		$details['contents'] = ob_get_contents();
+		$details->contents = ob_get_contents();
 		ob_end_clean();
 
-		if (!empty($details['date'])) {
-			$details['date'] = strtotime($details['date']);
+		if (!empty($details->date)) {
+			$details->date = strtotime($details->date);
 		}
 
 		return $details;

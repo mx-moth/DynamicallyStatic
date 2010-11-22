@@ -44,12 +44,11 @@ class DynamicallyStatic {
 	 *   $articlePath - The directory to search files for. This is searched recursively
 	 */
 	function findArticles($articlePath = '') {
-		$dirDetails = array(
-			'$type' => 'directory',
-			'$name' => basename($articlePath),
-			'$path' => $articlePath,
-			'files' => array(),
-		);
+		$dirDetails = new Article();
+		$dirDetails->_type = 'directory';
+		$dirDetails->_name = basename($articlePath);
+		$dirDetails->_path =  $articlePath;
+		$dirDetails->files = array();
 
 		$indent = preg_replace(array('`[^/]`', '`/`'), array('', "\t"), $articlePath);
 		$realArticlePath = $this->config['dirs']['articles'] . $articlePath;
@@ -72,22 +71,21 @@ class DynamicallyStatic {
 
 				$parser = $this->findParser($this->config['dirs']['articles'] . $filePath);
 				if ($parser != null) {
-					$details = array_merge(array(
-						'$type' => 'file',
-						'$name' => $fileName,
-						'$path' => $filePath,
-					), $parser->parse($this->config['dirs']['articles'] . $filePath));
+					$details = $parser->parse($this->config['dirs']['articles'] . $filePath);
+					$details->_type = 'file';
+					$details->_name = $fileName;
+					$details->_path = $filePath;
 				}
 				echo "\n";
 
 			}
 
 			if (!empty($details)) {
-				$dirDetails['files'][$fileName] = $details;
+				$dirDetails->files[$fileName] = $details;
 			}
 		}
 
-		return (empty($dirDetails['files']) ? null : $dirDetails);
+		return (empty($dirDetails->files) ? null : $dirDetails);
 	}
 
 	/**
@@ -107,8 +105,8 @@ class DynamicallyStatic {
 		$articles = $this->articles;
 
 		foreach ($bits as $bit) {
-			if ($articles['$type'] == 'directory' && isset($articles['files'][$bit])) {
-				$articles = &$articles['files'][$bit];
+			if ($articles->_type == 'directory' && isset($articles->files[$bit])) {
+				$articles = $articles->files[$bit];
 			} else {
 				$articles = null;
 				break;
@@ -126,7 +124,7 @@ class DynamicallyStatic {
 		$this->renderers = $this->_loadClasses($this->config['dirs']['renderers'], 'Renderer');
 		$this->modules = $this->_loadClasses($this->config['dirs']['modules'], 'Module');
 
-		foreach ($this->callbacks as &$callback) {
+		foreach ($this->callbacks as $callback) {
 			krsort($callback);
 		}
 	}
@@ -184,7 +182,7 @@ class DynamicallyStatic {
 	 *   $dest - The output directory for these files
 	 *   $files - An array of files and directories to render
 	 */
-	function renderArticle($article, $dest) {
+	function renderArticle(Article $article, $dest) {
 
 		if (!empty($this->callbacks['renderArticle'])) {
 			foreach ($this->callbacks['renderArticle'] as $modules) {
@@ -204,7 +202,9 @@ class DynamicallyStatic {
 		}
 
 		// Merge in the defaults
-		$article = array_merge($this->config['default']['article'], $article);
+		foreach ($this->config['default']['article'] as $key => $value) {
+			$article->{$key} = $value;
+		}
 
 		// Append the index (eg. index.html) if the output is a folder
 		if (preg_match('`/$`', $dest)) {
@@ -216,12 +216,12 @@ class DynamicallyStatic {
 			mkdir(dirname($realDest), 0755, true);
 		}
 
-		$renderer = $this->findRenderer($article['template']);
+		$renderer = $this->findRenderer($article->template);
 		if (!empty($renderer)) {
-			file_put_contents($realDest, $renderer->render($this->config['dirs']['templates'] . '/' . $article['template'], array('article' => $article)));
+			file_put_contents($realDest, $renderer->render($this->config['dirs']['templates'] . '/' . $article->template, array('article' => $article)));
 			$this->renderedFiles[] = $dest;
 		} else {
-			return 'No renderer found for ' . $article['template'];
+			return 'No renderer found for ' . $article->template;
 		}
 	}
 

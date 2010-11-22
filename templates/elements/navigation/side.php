@@ -5,7 +5,7 @@
 $posts = $this->ds->modules['Blog']->articles;
 
 foreach (array_slice($posts, 0, 3) as $article) {
-	echo sprintf('<li><a href="%s">%s</a></li>', $article['link'], $article['title']);
+	echo sprintf('<li><a href="%s">%s</a></li>', $article->link, $article->title);
 }
 ?>
 			</ul>

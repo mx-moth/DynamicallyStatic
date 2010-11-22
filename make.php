@@ -13,6 +13,7 @@ require($config['dirs']['core'] . '/Inflector.php');
 require($config['dirs']['core'] . '/AbstractParser.php');
 require($config['dirs']['core'] . '/AbstractRenderer.php');
 require($config['dirs']['core'] . '/AbstractModule.php');
+require($config['dirs']['core'] . '/Article.php');
 
 // Set the process rolling
 new DynamicallyStatic($config);

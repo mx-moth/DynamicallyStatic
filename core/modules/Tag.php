@@ -14,17 +14,18 @@ class TagModule extends AbstractModule {
 	 */
 	function preprocessArticles() {
 		// Grab all articles from the blog path
-		$articles = array($this->ds->getArticles());
+		$page = $this->ds->getArticles();
+		$articles = array($page);
 
 		// Get the tag counts
 		while (!empty($articles)) {
-			$file = &array_pop($articles);
-			if ($file['$type'] == 'directory') {
-				foreach ($file['files'] as $child) {
+			$file = array_pop($articles);
+			if ($file->_type == 'directory') {
+				foreach ($file->files as $child) {
 					array_push($articles, $child);
 				}
 			} else {
-				if (!empty($file['tags'])) foreach ($file['tags'] as $tag) {
+				if (!empty($file->tags)) foreach ($file->tags as $tag) {
 					if (empty($this->tags[$tag])) {
 						$this->tags[$tag] = array();
 					}
@@ -43,26 +44,26 @@ class TagModule extends AbstractModule {
 	 */
 	function createPages() {
 
-		foreach ($this->tags as $tag => $articles) {
+		foreach ($this->tags as $tag => &$articles) {
 			// Sort them in reverse cronological order. <3 anonymous functions.
 			usort($articles, function ($a, $b) {
-				if (isset($b['date']) && isset($a['date'])) {
-					return $b['date'] - $a['date'];
-				} else if (isset($b['date'])) {
+				if (isset($b->date) && isset($a->date)) {
+					return $b->date - $a->date;
+				} else if (isset($b->date)) {
 					return 1;
-				} else if (isset($a['date'])) {
+				} else if (isset($a->date)) {
 					return -1;
 				} else {
 					return;
 				}
 			});
-			$this->ds->renderArticle(array(
+			$this->ds->renderArticle(new Article(array(
 				'title' => 'Articles tagged with ' . $tag,
 				'contents' => $this->ds->renderElement($this->config['element'], array('articles' => $articles)),
 				'author' => null,
 				'date' => null,
 				'template' => $this->config['template'],
-			), $this->createLink($tag));
+			)), $this->createLink($tag));
 		}
 
 	}
