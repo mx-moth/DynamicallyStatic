@@ -68,14 +68,13 @@ class PageModule extends AbstractModule {
 			return '/';
 		}
 		$path = dirname(substr($article['$path'], strlen($this->config['articles'])));
-
+		$title = empty($article['title']) ? null : $article['title'];
 		$replace = array(
-			'{slug}' => Inflector::slug($article['title']),
-			'{title}' => $article['title'],
+			'{slug}' => Inflector::slug($title),
+			'{title}' => $title,
 			'{path}' => $path,
 		);
 		return strtr($this->config['articlePath'], $replace);
 	}
 
 }
-

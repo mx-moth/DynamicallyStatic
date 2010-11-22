@@ -1,6 +1,8 @@
 			<div class="article">
 
+				<?php if (!empty($article['title'])) { ?>
 				<h2><?php echo $article['title']; ?></h2>
+				<?php } ?>
 				<p class="details">
 					<?php
 					$meta = array();
@@ -11,7 +13,7 @@
 						$meta[] = 'Published on <span class="date">' . date('Y-m-d h:ia', $article['date']) . '</span>';
 					}
 					if (!empty($article['link'])) {
-						$meta[] = '<a href="' . $article['link'] . '" title="' . $article['title'] . '">Link to this article</a>';
+						$meta[] = '<a href="' . $article['link'] . '" title="' . (!empty($article['title']) ? $article['title'] : null) . '">Link to this article</a>';
 					}
 					if (!empty($article['tags'])) {
 						$tag = $this->ds->modules['Tag'];
