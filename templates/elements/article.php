@@ -2,7 +2,10 @@
 
 				<?php if (!empty($article['title'])) { ?>
 				<h2><?php echo $article['title']; ?></h2>
-				<?php } ?>
+				<?php
+				}
+				echo $article['contents'];
+				?>
 				<p class="details">
 					<?php
 					$meta = array();
@@ -26,6 +29,5 @@
 					echo implode(' | ', $meta);
 					?>
 				</p>
-				<?php echo $article['contents']; ?>
 
 			</div>
