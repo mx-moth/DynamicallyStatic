@@ -42,10 +42,10 @@ $config['blog']['template'] = 'blog.php';
 $config['pages'] = array();
 
 $config['pages']['articles'] = '/pages/';
-$config['pages']['home'] = $config['pages']['articles'] . 'home.php';
+$config['pages']['index'] = '`^index\b`';
 
 $config['pages']['rootPath'] = '';
-$config['pages']['articlePath'] = $config['pages']['rootPath'] . '{path}/{slug}/';
+$config['pages']['articlePath'] = $config['pages']['rootPath'] . '{path}/{name}/';
 
 
 $config['contact']['path'] = '/contact';

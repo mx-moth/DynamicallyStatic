@@ -66,23 +66,32 @@ class PageModule extends AbstractModule {
 	 */
 	function createLink($article) {
 
-		if ($article->_path == $this->config['home']) {
-			return '/';
+		$path = dirname(substr($article->_path, strlen($this->config['articles'])));
+		// If the path is the current directory (.), translate it to root (/)
+		if ($path == '.') {
+			$path = '/';
 		}
 
-		$path = dirname(substr($article->_path, strlen($this->config['articles'])));
-		if ($path == '.') {
-			$path = '';
+		// Strip the extension off the name
+		$name = preg_replace('`^([^.]+)\..*$`', '\1', $article->_name);
+
+		// If the name matches the index pattern, empty $name. This allows for 
+		// directory index pages
+		if (preg_match($this->config['index'], $name)) {
+			$name = '';
 		}
 
 		$title = empty($article->title) ? null : $article->title;
 
 		$replace = array(
+			'{path}' => $path,
+			'{name}' => $name,
+
 			'{slug}' => Inflector::slug($title),
 			'{title}' => $title,
-			'{path}' => $path,
 		);
-		return strtr($this->config['articlePath'], $replace);
+		// Make the replacements, and remove any double //s left over
+		return preg_replace('`//+`', '/', strtr($this->config['articlePath'], $replace));
 	}
 
 }
