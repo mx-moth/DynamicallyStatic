@@ -11,6 +11,7 @@ $config['dirs'] = array();
 $config['dirs']['root'] = dirname(__FILE__);
 
 $config['dirs']['core'] = $config['dirs']['root'] . '/core';
+$config['dirs']['vendors'] = $config['dirs']['core'] . '/vendors';
 
 $config['dirs']['parsers'] = $config['dirs']['core'] . '/parsers';
 $config['dirs']['renderers'] = $config['dirs']['core'] . '/renderers';
