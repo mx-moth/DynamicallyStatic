@@ -45,7 +45,7 @@ $config['pages']['articles'] = '/pages/';
 $config['pages']['index'] = '`^index\b`';
 
 $config['pages']['rootPath'] = '';
-$config['pages']['articlePath'] = $config['pages']['rootPath'] . '{path}/{name}/';
+$config['pages']['articlePath'] = $config['pages']['rootPath'] . '/{path}/{name}/';
 
 
 $config['contact']['path'] = '/contact';

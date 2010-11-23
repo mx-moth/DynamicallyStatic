@@ -71,6 +71,9 @@ class PageModule extends AbstractModule {
 		if ($path == '.') {
 			$path = '/';
 		}
+		if (!preg_match('`^/`', $path)) {
+			$path = '/' . $path;
+		}
 
 		// Strip the extension off the name
 		$name = preg_replace('`^([^.]+)\..*$`', '\1', $article->_name);
