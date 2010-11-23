@@ -44,7 +44,7 @@ class BlogModule extends AbstractModule {
 
 		// Sort them in reverse cronological order. <3 anonymous functions.
 		usort($this->articles, function ($a, $b) {
-			return $b['date'] - $a['date'];
+			return $b->date - $a->date;
 		});
 
 		// Render all articles

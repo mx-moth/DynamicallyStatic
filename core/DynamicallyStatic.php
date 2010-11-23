@@ -50,7 +50,7 @@ class DynamicallyStatic {
 		$dirDetails->_path =  $articlePath;
 		$dirDetails->files = array();
 
-		$indent = preg_replace(array('`[^/]`', '`/`'), array('', "\t"), $articlePath);
+		$indent = '	' . preg_replace(array('`[^/]`', '`/`'), array('', "\t"), $articlePath);
 		$realArticlePath = $this->config['dirs']['articles'] . $articlePath;
 
 		$files = array_diff(scandir($realArticlePath), array('.','..'));
