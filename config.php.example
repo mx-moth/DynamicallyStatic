@@ -7,6 +7,10 @@ $config['default']['article'] = array(
 	'template' => 'default.php',
 );
 
+$config['site'] = array();
+$config['site']['url'] = 'http://example.com';
+$config['site']['name'] = 'My site';
+
 $config['dirs'] = array();
 $config['dirs']['root'] = dirname(__FILE__);
 
@@ -34,9 +38,13 @@ $config['blog']['articles'] = '/blogs/';
 
 $config['blog']['rootPath'] = '/blog/';
 $config['blog']['articlePath'] = $config['blog']['rootPath'] . '{year}/{month}/{slug}/';
+$config['blog']['rssPath'] = $config['blog']['rootPath'] . 'rss.xml';
 
 $config['blog']['element'] = 'articles.php';
 $config['blog']['template'] = 'blog.php';
+
+$config['blog']['rssElement'] = 'rssArticles.php';
+$config['blog']['rssTemplate'] = 'rss.php';
 
 
 $config['pages'] = array();

@@ -56,10 +56,18 @@ class BlogModule extends AbstractModule {
 		$this->ds->renderArticle(new Article(array(
 			'title' => 'Latest posts',
 			'contents' => $this->ds->renderElement($this->config['element'], array('articles' => $this->articles)),
-			'author' => null,
-			'date' => null,
 			'template' => $this->config['template'],
 		)), $this->config['rootPath']);
+
+		// Render the index article
+		$this->ds->renderArticle(new Article(array(
+			'title' => $this->ds->config['site']['name'],
+			'link' => $this->ds->config['site']['url'] . $this->config['rootPath'],
+			'description' => 'Latest blog posts',
+			'date' => time(),
+			'template' => $this->config['rssTemplate'],
+			'contents' => $this->ds->renderElement($this->config['rssElement'], array('articles' => $this->articles)),
+		)), $this->config['rssPath']);
 	}
 
 	/**

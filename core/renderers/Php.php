@@ -15,6 +15,9 @@ class PhpRenderer extends AbstractRenderer {
 		// Modules can be accessed through $Module
 		extract($this->ds->modules, EXTR_SKIP);
 
+		// The DynamicallyStatic instance can be accessed through $DS
+		$DS = $this->ds;
+
 		ob_start();
 		include($templatePath);
 		$output = ob_get_contents();

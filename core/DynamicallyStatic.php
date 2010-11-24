@@ -203,7 +203,9 @@ class DynamicallyStatic {
 
 		// Merge in the defaults
 		foreach ($this->config['default']['article'] as $key => $value) {
-			$article->{$key} = $value;
+			if (empty($article->{$key})) {
+				$article->{$key} = $value;
+			}
 		}
 
 		// Append the index (eg. index.html) if the output is a folder
