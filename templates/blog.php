@@ -2,15 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-		<title>Maelstroms Corner<?php if (!empty($article->title))  echo ' - ' . $article->title; ?></title>
+		<title><?php echo $DS->config['site']['name']; if (!empty($article->title))  echo ' - ' . $article->title; ?></title>
 
 		<link href="/css/blog.css" type="text/css" rel="stylesheet" />
+		<link href="<?php echo $Blog->config['rssPath']; ?>" rel="alternate" title="Latest posts" type="application/atom+xml" />
+
 		<script type="text/javascript" src="/js/common/mootools/mootools.js"></script>
 		<script type="text/javascript" src="/js/generic.js"></script>
+		<?php
+		$header = empty($article->header) ? '' : $article->header;
+		if (!empty($article->scripts)) foreach ($article->scripts as $script) {
+			$url = '/js/' . $script . (preg_match('`\.js$`', $script) ? null : '.js');
+			$header.='<script type="text/javascript" src="' . $url . '"></script>';
+		}
+		echo $header;
+		?>
 	</head>
 	<body>
 		<div class="header">
-			<h1>Maelstrom's Corner</h1>
+			<h1><?php echo $DS->config['site']['name']; ?></h1>
 
 			<!-- Note careful use of whitepace here -->
 			<div class="navigation"><ul>
