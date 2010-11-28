@@ -49,6 +49,7 @@ class BlogModule extends AbstractModule {
 
 		// Render all articles
 		foreach ($this->articles as $article) {
+			$article->set(array('template' => $this->config['template']), false);
 			$this->ds->renderArticle($article, $article->link);
 		}
 
