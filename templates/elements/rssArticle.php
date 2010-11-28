@@ -22,7 +22,10 @@ foreach ($keys as $key) {
 
 	switch ($key) {
 	case 'link':
-		$value = $this->ds->config['site']['url'];
+		$value = $DS->config['site']['url'] . $value;
+		break;
+	case 'description':
+		$value = preg_replace('`<a ([^>]*)href="(/[^"]*)"([^>]*)>`', '<a \1href="' . $DS->config['site']['url'] . '\2"\3>', $value);
 		break;
 	case 'pubDate':
 		$value = date(DATE_RSS, $value);
@@ -31,6 +34,6 @@ foreach ($keys as $key) {
 
 	echo sprintf('<%1$s>%2$s</%1$s>', htmlentities($key), htmlentities($value));
 }
-echo '<guid isPermaLink="false">' . $article->link . '</guid>';
+echo '<guid isPermaLink="true">' . $DS->config['site']['url'] . $article->link . '</guid>';
 echo '</' . $wrapper . '>';
 ?>
