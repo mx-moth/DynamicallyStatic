@@ -63,3 +63,6 @@ $config['tag']['rootPath'] = '/tags/';
 $config['tag']['tagPath'] = $config['tag']['rootPath'] . '{slug}/';
 $config['tag']['element'] = 'articles.php';
 $config['tag']['template'] = $config['default']['article']['template'];
+
+
+$config['emailObfuscator']['output'] = '<a %1$s href="/email/%3$s/%2$s/" rel="email nofollow" %4$s>';
